@@ -19,23 +19,17 @@ def get_delist_tokens(url):
 
 		driver.get(url)
 
-		# for _ in range(100):
-		#     driver.execute_script("window.scrollTo(0, 0);")
-		#     time.sleep(1)
-
 		html_source = driver.page_source
 
 		soup = BeautifulSoup(html_source, "html.parser")
 
 		driver.quit()
 
-		# req = requests.get()
-		# soup = BeautifulSoup(req.content, 'html.parser')
-		#news = req.json()
 		links = soup.find_all('a')
 		for link in links:
 			if link:
 				print(link.get('href'))
+				print(link.text)
 			#title = article["title"].lower()
 			#match_result = title.match("binance will delist (.*) on (.*)")
 			#if match_result:
