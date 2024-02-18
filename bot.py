@@ -1,6 +1,6 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import time
 
@@ -9,11 +9,11 @@ url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161
 def get_delist_tokens(url):
 	tokens = []
 	try:
-		chrome_options = webdriver.ChromeOptions()
+		# chrome_options = webdriver.ChromeOptions()
 
-		driver = webdriver.Chrome(options=chrome_options)
+		driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
-		driver.get(urk)
+		driver.get(url)
 
 		# for _ in range(100):
 		#     driver.execute_script("window.scrollTo(0, 0);")
