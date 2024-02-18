@@ -9,6 +9,7 @@ url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161
 
 def get_delist_tokens(url):
 	tokens = []
+	has_been_processed = []
 	try:
 		options = Options()
 		options.add_argument('--headless')
@@ -27,9 +28,10 @@ def get_delist_tokens(url):
 
 		links = soup.find_all('a')
 		for link in links:
-			if link:
+			if link and (link not in has_been_processed):
+				has_been_processed.append(link)
 				# print(link.get('href'))
-				# print(link.text)
+				print(link.text)
 				title = link.text.upper()
 				if "BINANCE WILL DELIST " in title:
 					title = title.replace("BINANCE WILL DELIST ", '')
