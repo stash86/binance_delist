@@ -1,6 +1,5 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import time
 
@@ -11,7 +10,7 @@ def get_delist_tokens(url):
 	try:
 		# chrome_options = webdriver.ChromeOptions()
 
-		driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+		driver = webdriver.Chrome()
 
 		driver.get(url)
 
