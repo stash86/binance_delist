@@ -31,7 +31,6 @@ def get_delist_tokens(url):
 				# print(link.get('href'))
 				# print(link.text)
 				title = link.text.upper()
-				match_result = title.match("BINANCE WILL DELIST (.*) ON (.*)")
 				if "BINANCE WILL DELIST " in title:
 					title = title.replace("BINANCE WILL DELIST ", '')
 					arr_title = title.split(" ON ")
