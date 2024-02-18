@@ -1,5 +1,7 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import time
 
@@ -8,7 +10,12 @@ url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161
 def get_delist_tokens(url):
 	tokens = []
 	try:
-		driver = webdriver.Chrome()
+		options = Options()
+		options.add_argument('--headless')
+		options.add_argument('--no-sandbox')
+		options.add_argument('--disable-dev-shm-usage')
+		options.add_argument('--remote-debugging-pipe')
+		driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 		driver.get(url)
 
@@ -21,7 +28,7 @@ def get_delist_tokens(url):
 		soup = BeautifulSoup(html_source, "html.parser")
 
 		driver.quit()
-		
+
 		# req = requests.get()
 		# soup = BeautifulSoup(req.content, 'html.parser')
 		#news = req.json()
