@@ -36,7 +36,7 @@ def get_delist_tokens(url):
 					arr_title = title.split(" ON ")
 					arr_coins = arr_title[0].split(", ")
 					for coin in arr_coins:
-						blacklist = f"${coin}/.*"
+						blacklist = f"{coin}/.*"
 						if not blacklist in tokens:
 							tokens.append(blacklist)
 					# article_tokens = match_result.group(1).split(",|&")
