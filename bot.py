@@ -8,8 +8,6 @@ url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161
 def get_delist_tokens(url):
 	tokens = []
 	try:
-		# chrome_options = webdriver.ChromeOptions()
-
 		driver = webdriver.Chrome()
 
 		driver.get(url)
@@ -22,6 +20,8 @@ def get_delist_tokens(url):
 
 		soup = BeautifulSoup(html_source, "html.parser")
 
+		driver.quit()
+		
 		# req = requests.get()
 		# soup = BeautifulSoup(req.content, 'html.parser')
 		#news = req.json()
