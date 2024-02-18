@@ -32,11 +32,16 @@ def get_delist_tokens(url):
 				# print(link.text)
 				title = link.text.upper()
 				match_result = title.match("BINANCE WILL DELIST (.*) ON (.*)")
-				if match_result:
-				   article_tokens = match_result.group(1).split(",|&")
-				   tokens.extend(map(lambda elem: elem.strip(), article_tokens))
+				if "BINANCE WILL DELIST " in title:
+					title = title.replace("BINANCE WILL DELIST ", '')
+					arr_title = title.split(" ON ")
+					arr_coins = arr_title[0].split(", ")
+					for coin in arr_coins:
+						print(coin)
+					# article_tokens = match_result.group(1).split(",|&")
+					# tokens.extend(map(lambda elem: elem.strip(), article_tokens))
 
-		print(tokens)
+		# print(tokens)
 	except RequestException as e:
 		print("Failed to get article list.")
 		print(e)
