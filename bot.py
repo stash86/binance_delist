@@ -30,8 +30,8 @@ def get_delist_tokens(url):
 		for link in links:
 			if link and (link not in has_been_processed):
 				has_been_processed.append(link)
-				# print(link.get('href'))
-				print(link.text)
+				print(link.get('href'))
+				# print(link.text)
 				title = link.text.upper()
 				if "BINANCE WILL DELIST " in title:
 					title = title.replace("BINANCE WILL DELIST ", '')
