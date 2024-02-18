@@ -36,11 +36,13 @@ def get_delist_tokens(url):
 					arr_title = title.split(" ON ")
 					arr_coins = arr_title[0].split(", ")
 					for coin in arr_coins:
-						print(coin)
+						blacklist = f"${coin}/.*"
+						if not blacklist in tokens:
+							tokens.append(blacklist)
 					# article_tokens = match_result.group(1).split(",|&")
 					# tokens.extend(map(lambda elem: elem.strip(), article_tokens))
 
-		# print(tokens)
+		print(tokens)
 	except RequestException as e:
 		print("Failed to get article list.")
 		print(e)
