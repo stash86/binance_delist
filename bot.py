@@ -28,13 +28,15 @@ def get_delist_tokens(url):
 		links = soup.find_all('a')
 		for link in links:
 			if link:
-				print(link.get('href'))
-				print(link.text)
-			#title = article["title"].lower()
-			#match_result = title.match("binance will delist (.*) on (.*)")
-			#if match_result:
-			#    article_tokens = match_result.group(1).split(",|&")
-			#    tokens.extend(map(lambda elem: elem.strip(), article_tokens))
+				# print(link.get('href'))
+				# print(link.text)
+				title = link.text.upper()
+				match_result = title.match("BINANCE WILL DELIST (.*) ON (.*)")
+				if match_result:
+				   article_tokens = match_result.group(1).split(",|&")
+				   tokens.extend(map(lambda elem: elem.strip(), article_tokens))
+
+		print(tokens)
 	except RequestException as e:
 		print("Failed to get article list.")
 		print(e)
