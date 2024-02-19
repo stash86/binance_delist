@@ -86,21 +86,21 @@ def open_local_blacklist():
 	path = 'blacklist.json'
 
 	try:
-        # Read config from stdin if requested in the options
-        with Path(path).open() if path != '-' else sys.stdin as file:
-            config = rapidjson.load(file, parse_mode=CONFIG_PARSE_MODE)
-            print (config)
-    except FileNotFoundError:
-        raise OperationalException(
-            f'Config file "{path}" not found!'
-            ' Please create a config file or check whether it exists.')
-    except rapidjson.JSONDecodeError as e:
-        err_range = log_config_error_range(path, str(e))
-        raise OperationalException(
-            f'{e}\n'
-            f'Please verify the following segment of your configuration:\n{err_range}'
-            if err_range else 'Please verify your configuration file for syntax errors.'
-        )
+		# Read config from stdin if requested in the options
+		with Path(path).open() if path != '-' else sys.stdin as file:
+			config = rapidjson.load(file, parse_mode=CONFIG_PARSE_MODE)
+			print (config)
+	except FileNotFoundError:
+		raise OperationalException(
+			f'Config file "{path}" not found!'
+			' Please create a config file or check whether it exists.')
+	except rapidjson.JSONDecodeError as e:
+		err_range = log_config_error_range(path, str(e))
+		raise OperationalException(
+			f'{e}\n'
+			f'Please verify the following segment of your configuration:\n{err_range}'
+			if err_range else 'Please verify your configuration file for syntax errors.'
+		)
 	
 	# f = open(path_blacklist)
 	
