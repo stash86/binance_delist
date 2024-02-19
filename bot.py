@@ -82,7 +82,7 @@ def open_local_blacklist():
 	data = json.load(f)
 
 	for i in data['exchange']['pair_blacklist']:
-    	print(i)
+		print(i)
 
 def loop():
 	print("Checking for delisted tokens...")
