@@ -115,7 +115,7 @@ def open_local_blacklist():
 def save_local_blacklist():
 
 	try:
-		new_blacklist = Dict()
+		new_blacklist = dict()
 		new_blacklist['pair_blacklist'] = tokens
 		json_obj = rapidjson.dumps(new_blacklist)
 		with open(path_blacklist_file, "w") as outfile:
