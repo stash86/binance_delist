@@ -8,7 +8,7 @@ import json
 import rapidjson
 from typing import Any, Dict, List, Optional
 from pathlib import Path
-from libs.api import API_FT
+from libs.api import FtRestClient
 
 url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161"
 path_blacklist_file = 'blacklist.json'
@@ -193,7 +193,7 @@ def load_bots_data():
 
 def send_blacklist():
 	for bot in bots:
-		api_bot = API_FT(bot)
+		api_bot = FtRestClient(bot['ip_address'], bot['username'], bot['password'])
 		print(api_bot.blacklist(tokens))
 
 # def blacklist(bot_data, coin):
