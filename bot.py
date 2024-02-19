@@ -46,9 +46,11 @@ def get_delist_tokens(url):
 					driver.get(link)
 					html_source = driver.page_source
 					soup = BeautifulSoup(html_source, "html.parser")
-					spans = soup.find_all('span', 'richtext-text')
-					for span in spans:
-						print(span)
+					lis = soup.find_all('li')
+					for li in lis:
+						spans = li.find_all('span', 'richtext-text')
+						for span in spans:
+							print(span)
 					# title = title.replace("BINANCE WILL DELIST ", '')
 					# arr_title = title.split(" ON ")
 					# arr_coins = arr_title[0].split(", ")
