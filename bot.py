@@ -119,7 +119,7 @@ def save_local_blacklist():
 		new_blacklist['pair_blacklist'] = tokens
 		json_obj = rapidjson.dumps(new_blacklist)
 		with open(path_blacklist_file, "w") as outfile:
-			outfile.write(json_object)
+			outfile.write(json_obj)
 	# except FileNotFoundError:
 	# 	raise OperationalException(
 	# 		f'Config file "{path}" not found!'
