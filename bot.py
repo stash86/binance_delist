@@ -55,7 +55,7 @@ def get_delist_tokens(url):
 						exclude_in_span = ['<i>', '<strong>']
 						for span in spans:
 							if not any(exclude in span.text for exclude in exclude_in_span):
-								print(span)
+								print(span.text)
 					# title = title.replace("BINANCE WILL DELIST ", '')
 					# arr_title = title.split(" ON ")
 					# arr_coins = arr_title[0].split(", ")
