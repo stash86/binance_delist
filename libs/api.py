@@ -22,7 +22,7 @@ class API_FT:
 			if method == 'GET':
 				r = requests.get(url, auth=basic, params=params)
 			elif method == 'POST':
-				r = requests.post(url, auth=basic, params=params)
+				r = requests.post(url, auth=basic, data=params)
 
 			data = r.text
 
