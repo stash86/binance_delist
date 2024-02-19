@@ -1,4 +1,5 @@
 beautifulsoup4
+rapidjson
 requests
 selenium
 webdriver-manager

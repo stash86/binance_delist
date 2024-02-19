@@ -5,8 +5,12 @@ from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import time
 import json
+import rapidjson
+from typing import Any, Dict, List, Optional
+from pathlib import Path
 
 url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161"
+CONFIG_PARSE_MODE = rapidjson.PM_COMMENTS | rapidjson.PM_TRAILING_COMMAS
 
 def get_delist_tokens(url):
 	class_p_list_coins = "css-zwb0rk"
@@ -78,11 +82,34 @@ def get_delist_tokens(url):
 	return tokens
 
 def open_local_blacklist():
-	f = open('blacklist.json')
-	data = json.load(f)
 
-	for i in data['exchange']['pair_blacklist']:
-		print(i)
+	path = 'blacklist.json'
+
+	try:
+        # Read config from stdin if requested in the options
+        with Path(path).open() if path != '-' else sys.stdin as file:
+            config = rapidjson.load(file, parse_mode=CONFIG_PARSE_MODE)
+            print (config)
+    except FileNotFoundError:
+        raise OperationalException(
+            f'Config file "{path}" not found!'
+            ' Please create a config file or check whether it exists.')
+    except rapidjson.JSONDecodeError as e:
+        err_range = log_config_error_range(path, str(e))
+        raise OperationalException(
+            f'{e}\n'
+            f'Please verify the following segment of your configuration:\n{err_range}'
+            if err_range else 'Please verify your configuration file for syntax errors.'
+        )
+	
+	# f = open(path_blacklist)
+	
+	# data = json.load(f)
+
+	# f.close()
+
+	# for i in data['exchange']['pair_blacklist']:
+	# 	print(i)
 
 def loop():
 	print("Checking for delisted tokens...")
