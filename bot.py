@@ -45,7 +45,7 @@ def get_delist_tokens(url):
 					# tokens.extend(map(lambda elem: elem.strip(), article_tokens))
 				elif ("NOTICE OF REMOVAL OF " in title) and ("MARGIN" not in title) and (count_notice > 0):
 					count_notice -= 1
-					link = f"https://www.binance.com{link.get("href")}"
+					link = f"https://www.binance.com{link.get('href')}"
 					driver.get(link)
 					html_source = driver.page_source
 					soup = BeautifulSoup(html_source, "html.parser")
@@ -71,7 +71,7 @@ def get_delist_tokens(url):
 
 		driver.quit()
 		print(tokens)
-	except RequestException as e:
+	except Exception as e:
 		print("Failed to get article list.")
 		print(e)
 	return tokens
