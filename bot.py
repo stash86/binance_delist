@@ -8,6 +8,7 @@ import time
 url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161"
 
 def get_delist_tokens(url):
+	class_p_list_coins = 'css-zwb0rk'
 	tokens = []
 	has_been_processed = []
 	try:
@@ -48,11 +49,13 @@ def get_delist_tokens(url):
 					driver.get(link)
 					html_source = driver.page_source
 					soup = BeautifulSoup(html_source, "html.parser")
-					lis = soup.find_all('p', 'css-zwb0rk')
+					lis = soup.find_all('p', class_p_list_coins)
 					for li in lis:
-						spans = li.find_all('span', 'richtext-text')
+						spans = li.find_all('span', 'richtext-text')\
+						exclude_in_span = ['<i>', '<strong>']
 						for span in spans:
-							print(span)
+							if not any(exclude in span.text for exclude in exclude_in_span)
+								print(span)
 					# title = title.replace("BINANCE WILL DELIST ", '')
 					# arr_title = title.split(" ON ")
 					# arr_coins = arr_title[0].split(", ")
