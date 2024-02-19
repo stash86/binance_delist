@@ -46,7 +46,7 @@ def get_delist_tokens(url):
 					driver.get(link)
 					html_source = driver.page_source
 					soup = BeautifulSoup(html_source, "html.parser")
-					lis = soup.find_all('li')
+					lis = soup.find_all('p', 'css-zwb0rk')
 					for li in lis:
 						spans = li.find_all('span', 'richtext-text')
 						for span in spans:
