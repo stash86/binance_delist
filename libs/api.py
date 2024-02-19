@@ -1,41 +1,78 @@
 import json
 import requests
-from requests.auth import HTTPBasicAuth
+# from requests.auth import HTTPBasicAuth
+from requests.exceptions import ConnectionError
+from urllib.parse import urlencode, urlparse, urlunparse
+from typing import Optional
 
 class API_FT:
 
 	def __init__(self, data) -> None:
-		self._ip = data['ip_address']
-		self._username = data['username']
-		self._password = data['password']
+		self._serverurl = data['ip_address']
+		self._session = requests.Session()
+		self._session.auth = (data['username'], data['password'])
 
-	def call(self, method:str = 'GET', command:str = 'ping', params={}):
-		ip_address = self._ip
-		username = self._username
-		password = self._password
-		data = None
+	def _call(self, method:str = 'GET', command:str = 'ping', params: Optional[dict] = None, data=None, files=None):
+		if str(method).upper() not in ('GET', 'POST', 'PUT', 'DELETE'):
+			raise ValueError(f'invalid method <{method}>')
 
-		if (not(username == '')) and (not(password == '')):
-			basic = HTTPBasicAuth(username, password)
-			url = f"http://{ip_address}/api/v1/{command}"
+		basepath = f"{self._serverurl}/api/v1/{command}"
+
+		hd = {"Accept": "application/json",
+			  "Content-Type": "application/json"
+			  }
+
+		# Split url
+		schema, netloc, path, par, query, fragment = urlparse(basepath)
+		# URLEncode query string
+		query = urlencode(params) if params else ""
+		# recombine url
+		url = urlunparse((schema, netloc, path, par, query, fragment))
+
+		try:
+			resp = self._session.request(method, url, headers=hd, data=json.dumps(data))
+			# return resp.text
+			return resp.json()
+		except ConnectionError:
+			logger.warning("Connection error")
+		
+		# ip_address = self._ip
+		# username = self._username
+		# password = self._password
+		# data = None
+
+		# if (not(username == '')) and (not(password == '')):
+		# 	basic = HTTPBasicAuth(username, password)
+		# 	url = f"http://{ip_address}/api/v1/{command}"
 			
-			if method == 'GET':
-				r = requests.get(url, auth=basic, params=params)
-			elif method == 'POST':
-				r = requests.post(url, auth=basic, data=params)
+		# 	if method == 'GET':
+		# 		r = requests.get(url, auth=basic, params=params)
+		# 	elif method == 'POST':
+		# 		r = requests.post(url, auth=basic, data=params)
 
-			data = r.text
+		# 	data = r.text
 
-		return data
+		# return data
 
+	def _get(self, command, params: Optional[dict] = None):
+		return self._call("GET", command, params=params)
 
-	def blacklist_post(self, pairs:list = []):
-		params = {pairs}
-		# params = {
-		# 	'blacklist': pairs
-		# }
-		res = self.call(method="POST", command="blacklist", params=params)
-		return res
+	def _delete(self, command, params: Optional[dict] = None):
+		return self._call("DELETE", command, params=params)
+
+	def _post(self, command, params: Optional[dict] = None, data: Optional[dict] = None):
+		return self._call("POST", command, params=params, data=data)
+
+	def blacklist(self, *args):
+        """Show the current blacklist.
+
+        :param add: List of coins to add (example: "BNB/BTC")
+        :return: json object
+        """
+        if not args:
+            return self._get("blacklist")
+        else:
+            return self._post("blacklist", data={"blacklist": args})
 
 
 # def forceenter(ip_address: str, pair: str, direction: str, rate: float):
