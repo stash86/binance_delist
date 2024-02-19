@@ -51,7 +51,7 @@ def get_delist_tokens(url):
 					soup = BeautifulSoup(html_source, "html.parser")
 					lis = soup.find_all('p', class_p_list_coins)
 					for li in lis:
-						spans = li.find_all('span', 'richtext-text')\
+						spans = li.find_all('span', 'richtext-text')
 						exclude_in_span = ['<i>', '<strong>']
 						for span in spans:
 							if not any(exclude in span.text for exclude in exclude_in_span)
