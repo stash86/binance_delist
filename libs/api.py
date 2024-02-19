@@ -30,7 +30,7 @@ class API_FT:
 
 
 	def blacklist_post(self, pairs:list = []):
-		params = pairs
+		params = {pairs}
 		# params = {
 		# 	'blacklist': pairs
 		# }
