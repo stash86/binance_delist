@@ -194,8 +194,8 @@ def load_bots_data():
 def send_blacklist():
 	for bot in bots:
 		api_bot = API_FT(bot)
-		print(tokens)
-		print(api_bot.blacklist_post(tokens))
+		for line in tokens:
+			print(api_bot.blacklist_post([line]))
 
 # def blacklist(bot_data, coin):
 # 	print(api.profit(ip, days))
