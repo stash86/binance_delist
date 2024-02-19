@@ -193,7 +193,7 @@ def load_bots_data():
 
 def send_blacklist():
 	for bot in bots:
-		api_bot = FtRestClient(bot['ip_address'], bot['username'], bot['password'])
+		api_bot = FtRestClient(f"http://{bot['ip_address']}", bot['username'], bot['password'])
 		print(api_bot.blacklist(tokens))
 
 # def blacklist(bot_data, coin):
