@@ -97,6 +97,7 @@ def open_local_blacklist():
 			f'Please verify the following segment of your configuration:\n{err_range}'
 			if err_range else 'Please verify your configuration file for syntax errors.'
 		)
+
 	
 def save_local_blacklist():
 	print("Saving local blacklist file")
@@ -129,6 +130,7 @@ def save_local_blacklist():
 	# for i in data['exchange']['pair_blacklist']:
 	# 	print(i)
 
+
 def open_local_processed():
 	print("Loading local processed file")
 	try:
@@ -148,6 +150,7 @@ def open_local_processed():
 			f'Please verify the following segment of your configuration:\n{err_range}'
 			if err_range else 'Please verify your configuration file for syntax errors.'
 		)
+
 	
 def save_local_processed():
 	print("Saving local processed file")
@@ -180,12 +183,13 @@ def save_local_processed():
 	# for i in data['exchange']['pair_processed']:
 	# 	print(i)
 
+
 def load_bots_data():
 	with Path(path_bots_file).open() if path_bots_file != '-' else sys.stdin as file:
-		bots = rapidjson.load(file, parse_mode=CONFIG_PARSE_MODE)
-		print(bots)
-		# for line in bots:
-		# 	print(line)
+		data_bots = rapidjson.load(file, parse_mode=CONFIG_PARSE_MODE)
+		for line in data_bots:
+			bots.append(line)
+
 
 def send_blacklist():
 	print(bots)
