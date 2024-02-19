@@ -43,7 +43,7 @@ def get_delist_tokens(url):
 					# article_tokens = match_result.group(1).split(",|&")
 					# tokens.extend(map(lambda elem: elem.strip(), article_tokens))
 				elif ("NOTICE OF REMOVAL OF " in title) and ("MARGIN" not in title) and (count_notice > 0):
-					count_notice --;
+					count_notice --
 					link = f"https://www.binance.com{link.get('href')}"
 					driver.get(link)
 					html_source = driver.page_source
