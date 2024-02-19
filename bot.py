@@ -35,11 +35,11 @@ def get_delist_tokens(url):
 		links = soup.find_all("a")
 		count_notice = 5;
 		for link in links:
-			if link and (link not in has_been_processed):
-				has_been_processed.append(link)
+			title = link.text.upper()
+			if title and (title not in has_been_processed):
+				has_been_processed.append(title)
 				# print(link.get("href"))
 				# print(link.text)
-				title = link.text.upper()
 				if "BINANCE WILL DELIST " in title:
 					title = title.replace("BINANCE WILL DELIST ", "")
 					arr_title = title.split(" ON ")
@@ -82,7 +82,7 @@ def get_delist_tokens(url):
 		save_local_processed()
 	except Exception as e:
 		print("Failed to get article list.")
-		print(e)
+		# print(e)
 	# return tokens
 
 def open_local_blacklist():
