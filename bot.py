@@ -37,6 +37,7 @@ def get_delist_tokens(url):
 		for link in links:
 			title = link.text.upper()
 			if title and (title not in has_been_processed):
+				print(title)
 				has_been_processed.append(title)
 				# print(link.get("href"))
 				# print(link.text)
@@ -88,6 +89,7 @@ def get_delist_tokens(url):
 def open_local_blacklist():
 
 	try:
+		print("Loading local blacklist file")
 		# Read config from stdin if requested in the options
 		with Path(path_blacklist_file).open() if path_blacklist_file != '-' else sys.stdin as file:
 			config = rapidjson.load(file, parse_mode=CONFIG_PARSE_MODE)
@@ -106,7 +108,7 @@ def open_local_blacklist():
 		)
 	
 def save_local_blacklist():
-
+	print("Saving local blacklist file")
 	try:
 		new_blacklist = dict()
 		new_blacklist['pair_blacklist'] = tokens
@@ -137,7 +139,7 @@ def save_local_blacklist():
 	# 	print(i)
 
 def open_local_processed():
-
+	print("Loading local processed file")
 	try:
 		# Read config from stdin if requested in the options
 		with Path(path_processed_file).open() if path_processed_file != '-' else sys.stdin as file:
@@ -157,7 +159,7 @@ def open_local_processed():
 		)
 	
 def save_local_processed():
-
+	print("Saving local processed file")
 	try:
 		new_processed = dict()
 		new_processed['processed'] = has_been_processed
