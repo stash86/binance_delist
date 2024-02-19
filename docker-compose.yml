@@ -1,0 +1,6 @@
+version: "3"
+services:
+  binance-scraper:
+    image: binance-scraper
+    build: .
+    container_name: binance-scraper
