@@ -24,13 +24,11 @@ def get_delist_tokens(url):
 
 		soup = BeautifulSoup(html_source, "html.parser")
 
-		driver.quit()
-
 		links = soup.find_all('a')
 		for link in links:
 			if link and (link not in has_been_processed):
 				has_been_processed.append(link)
-				print(link.get('href'))
+				# print(link.get('href'))
 				# print(link.text)
 				title = link.text.upper()
 				if "BINANCE WILL DELIST " in title:
@@ -43,7 +41,23 @@ def get_delist_tokens(url):
 							tokens.append(blacklist)
 					# article_tokens = match_result.group(1).split(",|&")
 					# tokens.extend(map(lambda elem: elem.strip(), article_tokens))
+				elif ("NOTICE OF REMOVAL OF " in title) and ("MARGIN" not in title):
+					link = f"https://www.binance.com{link.get('href')}"
+					driver.get(link)
+					html_source = driver.page_source
+					soup = BeautifulSoup(html_source, "html.parser")
+					spans = soup.find_all('span', 'richtext-text')
+					for span in spans:
+						print(span)
+					# title = title.replace("BINANCE WILL DELIST ", '')
+					# arr_title = title.split(" ON ")
+					# arr_coins = arr_title[0].split(", ")
+					# for coin in arr_coins:
+					# 	blacklist = f"{coin}/.*"
+					# 	if not blacklist in tokens:
+					# 		tokens.append(blacklist)
 
+		driver.quit()
 		print(tokens)
 	except RequestException as e:
 		print("Failed to get article list.")
