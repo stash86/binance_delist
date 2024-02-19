@@ -8,6 +8,7 @@ import json
 import rapidjson
 from typing import Any, Dict, List, Optional
 from pathlib import Path
+from libs.api as API_FT
 
 url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161"
 path_blacklist_file = 'blacklist.json'
@@ -16,6 +17,7 @@ path_bots_file = 'bots.json'
 CONFIG_PARSE_MODE = rapidjson.PM_COMMENTS | rapidjson.PM_TRAILING_COMMAS
 tokens = []
 has_been_processed = []
+bots = []
 
 def get_delist_tokens(url):
 	class_p_list_coins = "css-zwb0rk"	
@@ -181,20 +183,20 @@ def save_local_processed():
 def load_bots_data():
 	with Path(path_bots_file).open() if path_bots_file != '-' else sys.stdin as file:
 		bots = rapidjson.load(file, parse_mode=CONFIG_PARSE_MODE)
-		for line in bots:
-			print(line)
-	
-	# file = open('bots.json')
-	# data = json.load(file)
-	# file.close()
+		# for line in bots:
+		# 	print(line)
 
-	# for bot in data:
-	# 	print(bot)
+def send_blacklist():
+	for bot in bots:
+		api_bot = API_FT(bot)
+		print(api_bot.blacklist_post(tokens))
 
-	# return username, password
+# def blacklist(bot_data, coin):
+# 	print(api.profit(ip, days))
 
 if __name__ == "__main__":
 	load_bots_data()
 	open_local_blacklist()
+	send_blacklist()
 	open_local_processed()
 	get_delist_tokens(url)
