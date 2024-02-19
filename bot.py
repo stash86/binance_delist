@@ -192,9 +192,7 @@ def load_bots_data():
 
 
 def send_blacklist():
-	print(bots)
 	for bot in bots:
-		print(f"creating api for {bot['ip_address']}")
 		api_bot = API_FT(bot)
 		print(api_bot.blacklist_post(tokens))
 

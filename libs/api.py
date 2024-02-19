@@ -33,7 +33,7 @@ class API_FT:
 		params = {
 			'blacklist': pairs
 		}
-		res = self.call(method="POST", command="blacklist_post", params=params)
+		res = self.call(method="POST", command="blacklist", params=params)
 		return res
 
 
