@@ -25,6 +25,7 @@ def get_delist_tokens(url):
 		soup = BeautifulSoup(html_source, "html.parser")
 
 		links = soup.find_all('a')
+		count_notice = 5;
 		for link in links:
 			if link and (link not in has_been_processed):
 				has_been_processed.append(link)
@@ -41,7 +42,8 @@ def get_delist_tokens(url):
 							tokens.append(blacklist)
 					# article_tokens = match_result.group(1).split(",|&")
 					# tokens.extend(map(lambda elem: elem.strip(), article_tokens))
-				elif ("NOTICE OF REMOVAL OF " in title) and ("MARGIN" not in title):
+				elif ("NOTICE OF REMOVAL OF " in title) and ("MARGIN" not in title) and (count_notice > 0):
+					count_notice --;
 					link = f"https://www.binance.com{link.get('href')}"
 					driver.get(link)
 					html_source = driver.page_source
