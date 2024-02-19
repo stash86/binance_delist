@@ -8,15 +8,15 @@ import time
 url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161"
 
 def get_delist_tokens(url):
-	class_p_list_coins = 'css-zwb0rk'
+	class_p_list_coins = "css-zwb0rk"
 	tokens = []
 	has_been_processed = []
 	try:
 		options = Options()
-		options.add_argument('--headless')
-		options.add_argument('--no-sandbox')
-		options.add_argument('--disable-dev-shm-usage')
-		options.add_argument('--remote-debugging-pipe')
+		options.add_argument("--headless")
+		options.add_argument("--no-sandbox")
+		options.add_argument("--disable-dev-shm-usage")
+		options.add_argument("--remote-debugging-pipe")
 		driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 		driver.get(url)
@@ -25,16 +25,16 @@ def get_delist_tokens(url):
 
 		soup = BeautifulSoup(html_source, "html.parser")
 
-		links = soup.find_all('a')
+		links = soup.find_all("a")
 		count_notice = 5;
 		for link in links:
 			if link and (link not in has_been_processed):
 				has_been_processed.append(link)
-				# print(link.get('href'))
+				# print(link.get("href"))
 				# print(link.text)
 				title = link.text.upper()
 				if "BINANCE WILL DELIST " in title:
-					title = title.replace("BINANCE WILL DELIST ", '')
+					title = title.replace("BINANCE WILL DELIST ", "")
 					arr_title = title.split(" ON ")
 					arr_coins = arr_title[0].split(", ")
 					for coin in arr_coins:
@@ -45,18 +45,23 @@ def get_delist_tokens(url):
 					# tokens.extend(map(lambda elem: elem.strip(), article_tokens))
 				elif ("NOTICE OF REMOVAL OF " in title) and ("MARGIN" not in title) and (count_notice > 0):
 					count_notice -= 1
-					link = f"https://www.binance.com{link.get('href')}"
+					link = f"https://www.binance.com{link.get("href")}"
 					driver.get(link)
 					html_source = driver.page_source
 					soup = BeautifulSoup(html_source, "html.parser")
-					lis = soup.find_all('p', class_p_list_coins)
+					lis = soup.find_all("p", class_p_list_coins)
 					for li in lis:
-						spans = li.find_all('span', 'richtext-text')
-						exclude_in_span = ['<i>', '<strong>']
+						spans = li.find_all("span", "richtext-text")
+						exclude_in_span = ["<i>", "<strong>"]
 						for span in spans:
-							if '/' in span.text:
-								print(span.text)
-					# title = title.replace("BINANCE WILL DELIST ", '')
+							if "/" in span.text:
+								line = span.text.replace(": ", "")
+								arr_coins = line.split(", ")
+								for coin in arr_coins:
+									if not coin in tokens:
+										tokens.append(coin)
+								# print(span.text)
+					# title = title.replace("BINANCE WILL DELIST ", "")
 					# arr_title = title.split(" ON ")
 					# arr_coins = arr_title[0].split(", ")
 					# for coin in arr_coins:
