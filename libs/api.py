@@ -64,15 +64,15 @@ class API_FT:
 		return self._call("POST", command, params=params, data=data)
 
 	def blacklist(self, *args):
-        """Show the current blacklist.
+		"""Show the current blacklist.
 
-        :param add: List of coins to add (example: "BNB/BTC")
-        :return: json object
-        """
-        if not args:
-            return self._get("blacklist")
-        else:
-            return self._post("blacklist", data={"blacklist": args})
+		:param add: List of coins to add (example: "BNB/BTC")
+		:return: json object
+		"""
+		if not args:
+			return self._get("blacklist")
+		else:
+			return self._post("blacklist", data={"blacklist": args})
 
 
 # def forceenter(ip_address: str, pair: str, direction: str, rate: float):
