@@ -89,7 +89,7 @@ def open_local_blacklist():
 		# Read config from stdin if requested in the options
 		with Path(path).open() if path != '-' else sys.stdin as file:
 			config = rapidjson.load(file, parse_mode=CONFIG_PARSE_MODE)
-			print (config)
+			print (config['exchange']['pair_blacklist'])
 	except FileNotFoundError:
 		raise OperationalException(
 			f'Config file "{path}" not found!'
