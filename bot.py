@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import time
+import json
 
 url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161"
 
@@ -76,6 +77,13 @@ def get_delist_tokens(url):
 		print(e)
 	return tokens
 
+def open_local_blacklist():
+	f = open('blacklist.json')
+	data = json.load(f)
+
+	for i in data['exchange']['pair_blacklist']:
+    	print(i)
+
 def loop():
 	print("Checking for delisted tokens...")
 	blacklisted_tokens = []
@@ -97,4 +105,5 @@ def loop():
 	#     print(f"Blacklisted {len(blacklisted_tokens)} tokens.")
 
 if __name__ == "__main__":
-	get_delist_tokens(url)
+	open_local_blacklist()
+	# get_delist_tokens(url)
