@@ -11,6 +11,7 @@ from pathlib import Path
 
 url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161"
 path_blacklist_file = 'blacklist.json'
+path_processed_file = 'processed.json'
 CONFIG_PARSE_MODE = rapidjson.PM_COMMENTS | rapidjson.PM_TRAILING_COMMAS
 tokens = []
 has_been_processed = []
@@ -76,8 +77,9 @@ def get_delist_tokens(url):
 					# 		tokens.append(blacklist)
 
 		driver.quit()
-		print(tokens)
+		# print(tokens)
 		save_local_blacklist()
+		save_local_processed()
 	except Exception as e:
 		print("Failed to get article list.")
 		print(e)
@@ -103,15 +105,6 @@ def open_local_blacklist():
 			if err_range else 'Please verify your configuration file for syntax errors.'
 		)
 	
-	# f = open(path_blacklist)
-	
-	# data = json.load(f)
-
-	# f.close()
-
-	# for i in data['exchange']['pair_blacklist']:
-	# 	print(i)
-
 def save_local_blacklist():
 
 	try:
@@ -143,6 +136,57 @@ def save_local_blacklist():
 	# for i in data['exchange']['pair_blacklist']:
 	# 	print(i)
 
+def open_local_processed():
+
+	try:
+		# Read config from stdin if requested in the options
+		with Path(path_processed_file).open() if path_processed_file != '-' else sys.stdin as file:
+			config = rapidjson.load(file, parse_mode=CONFIG_PARSE_MODE)
+			for line in config['processed']:
+				has_been_processed.append(line)
+	except FileNotFoundError:
+		raise OperationalException(
+			f'Config file "{path_processed_file}" not found!'
+			' Please create a config file or check whether it exists.')
+	except rapidjson.JSONDecodeError as e:
+		err_range = log_config_error_range(path_processed_file, str(e))
+		raise OperationalException(
+			f'{e}\n'
+			f'Please verify the following segment of your configuration:\n{err_range}'
+			if err_range else 'Please verify your configuration file for syntax errors.'
+		)
+	
+def save_local_processed():
+
+	try:
+		new_processed = dict()
+		new_processed['processed'] = has_been_processed
+		json_obj = rapidjson.dumps(new_processed)
+		with open(path_processed_file, "w") as outfile:
+			outfile.write(json_obj)
+	# except FileNotFoundError:
+	# 	raise OperationalException(
+	# 		f'Config file "{path}" not found!'
+	# 		' Please create a config file or check whether it exists.')
+	# except rapidjson.JSONDecodeError as e:
+	# 	err_range = log_config_error_range(path, str(e))
+	# 	raise OperationalException(
+	# 		f'{e}\n'
+	# 		f'Please verify the following segment of your configuration:\n{err_range}'
+	# 		if err_range else 'Please verify your configuration file for syntax errors.'
+	# 	)
+	except Exception as e:
+		print(e)
+	
+	# f = open(path_processed)
+	
+	# data = json.load(f)
+
+	# f.close()
+
+	# for i in data['exchange']['pair_processed']:
+	# 	print(i)
+
 def loop():
 	print("Checking for delisted tokens...")
 	blacklisted_tokens = []
@@ -165,4 +209,5 @@ def loop():
 
 if __name__ == "__main__":
 	open_local_blacklist()
+	open_local_processed()
 	get_delist_tokens(url)
