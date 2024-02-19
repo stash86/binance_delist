@@ -8,7 +8,7 @@ import json
 import rapidjson
 from typing import Any, Dict, List, Optional
 from pathlib import Path
-from libs.api as API_FT
+from libs.api import API_FT
 
 url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161"
 path_blacklist_file = 'blacklist.json'
