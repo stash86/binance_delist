@@ -11,11 +11,11 @@ from pathlib import Path
 
 url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161"
 CONFIG_PARSE_MODE = rapidjson.PM_COMMENTS | rapidjson.PM_TRAILING_COMMAS
+tokens = []
+has_been_processed = []
 
 def get_delist_tokens(url):
-	class_p_list_coins = "css-zwb0rk"
-	tokens = []
-	has_been_processed = []
+	class_p_list_coins = "css-zwb0rk"	
 	try:
 		options = Options()
 		options.add_argument("--headless")
@@ -89,7 +89,8 @@ def open_local_blacklist():
 		# Read config from stdin if requested in the options
 		with Path(path).open() if path != '-' else sys.stdin as file:
 			config = rapidjson.load(file, parse_mode=CONFIG_PARSE_MODE)
-			print (config['exchange']['pair_blacklist'])
+			for line in config['exchange']['pair_blacklist']:
+				tokens.append(line)
 	except FileNotFoundError:
 		raise OperationalException(
 			f'Config file "{path}" not found!'
@@ -133,4 +134,4 @@ def loop():
 
 if __name__ == "__main__":
 	open_local_blacklist()
-	# get_delist_tokens(url)
+	get_delist_tokens(url)
