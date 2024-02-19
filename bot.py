@@ -10,6 +10,7 @@ from typing import Any, Dict, List, Optional
 from pathlib import Path
 
 url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161"
+path_blacklist_file = 'blacklist.json'
 CONFIG_PARSE_MODE = rapidjson.PM_COMMENTS | rapidjson.PM_TRAILING_COMMAS
 tokens = []
 has_been_processed = []
@@ -76,32 +77,62 @@ def get_delist_tokens(url):
 
 		driver.quit()
 		print(tokens)
+		save_local_blacklist()
 	except Exception as e:
 		print("Failed to get article list.")
 		print(e)
-	return tokens
+	# return tokens
 
 def open_local_blacklist():
 
-	path = 'blacklist.json'
-
 	try:
 		# Read config from stdin if requested in the options
-		with Path(path).open() if path != '-' else sys.stdin as file:
+		with Path(path_blacklist_file).open() if path_blacklist_file != '-' else sys.stdin as file:
 			config = rapidjson.load(file, parse_mode=CONFIG_PARSE_MODE)
-			for line in config['exchange']['pair_blacklist']:
+			for line in config['pair_blacklist']:
 				tokens.append(line)
 	except FileNotFoundError:
 		raise OperationalException(
-			f'Config file "{path}" not found!'
+			f'Config file "{path_blacklist_file}" not found!'
 			' Please create a config file or check whether it exists.')
 	except rapidjson.JSONDecodeError as e:
-		err_range = log_config_error_range(path, str(e))
+		err_range = log_config_error_range(path_blacklist_file, str(e))
 		raise OperationalException(
 			f'{e}\n'
 			f'Please verify the following segment of your configuration:\n{err_range}'
 			if err_range else 'Please verify your configuration file for syntax errors.'
 		)
+	
+	# f = open(path_blacklist)
+	
+	# data = json.load(f)
+
+	# f.close()
+
+	# for i in data['exchange']['pair_blacklist']:
+	# 	print(i)
+
+def save_local_blacklist():
+
+	try:
+		new_blacklist = Dict()
+		new_blacklist['pair_blacklist'] = tokens
+		json_obj = rapidjson.dumps(new_blacklist)
+		with open(path_blacklist_file, "w") as outfile:
+			outfile.write(json_object)
+	# except FileNotFoundError:
+	# 	raise OperationalException(
+	# 		f'Config file "{path}" not found!'
+	# 		' Please create a config file or check whether it exists.')
+	# except rapidjson.JSONDecodeError as e:
+	# 	err_range = log_config_error_range(path, str(e))
+	# 	raise OperationalException(
+	# 		f'{e}\n'
+	# 		f'Please verify the following segment of your configuration:\n{err_range}'
+	# 		if err_range else 'Please verify your configuration file for syntax errors.'
+	# 	)
+	except Exception as e:
+		print(e)
 	
 	# f = open(path_blacklist)
 	
