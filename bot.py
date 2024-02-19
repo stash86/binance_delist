@@ -172,9 +172,10 @@ def load_bots_data():
 def send_blacklist(blacklist):
 	if len(blacklist) > 0:
 		for bot in bots:
+			logger.info(f"Send blacklist list to {bot['ip_address']}")
 			api_bot = FtRestClient(f"http://{bot['ip_address']}", bot['username'], bot['password'])
 			for line in blacklist:
-				logger.info(api_bot.blacklist(line))
+				api_bot.blacklist(line)
 
 
 if __name__ == "__main__":
