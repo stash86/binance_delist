@@ -12,6 +12,7 @@ from pathlib import Path
 url = "https://www.binance.com/en/support/announcement/delisting?c=161&navId=161"
 path_blacklist_file = 'blacklist.json'
 path_processed_file = 'processed.json'
+path_bots_file = 'bots.json'
 CONFIG_PARSE_MODE = rapidjson.PM_COMMENTS | rapidjson.PM_TRAILING_COMMAS
 tokens = []
 has_been_processed = []
@@ -178,16 +179,17 @@ def save_local_processed():
 	# 	print(i)
 
 def load_bots_data():
-	file = open('bots.json')
-	data = json.load(file)
-	file.close()
+	with Path(path_bots_file).open() if path_bots_file != '-' else sys.stdin as file:
+		bots = rapidjson.load(file, parse_mode=CONFIG_PARSE_MODE)
+		for line in bots:
+			print(line)
+	
+	# file = open('bots.json')
+	# data = json.load(file)
+	# file.close()
 
-	for bot in data:
-		print(bot)
-		# if bot['ip_address'] == ip_address:
-		# 	username = bot['username']
-		# 	password = bot['password']
-		# 	break
+	# for bot in data:
+	# 	print(bot)
 
 	# return username, password
 
