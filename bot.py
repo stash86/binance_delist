@@ -77,7 +77,7 @@ def get_delist_tokens(url):
 								arr_coins = line.split(", ")
 								for coin in arr_coins:
 									if (not coin in tokens) and (not coin in new_blacklist):
-										new_blacklist.append(blacklist)
+										new_blacklist.append(coin)
 
 		driver.quit()
 		
