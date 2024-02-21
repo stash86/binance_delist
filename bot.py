@@ -28,18 +28,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def get_delist_tokens(url):
+def get_delist_tokens(url, driver):
 	class_p_list_coins = "css-zwb0rk"
 	new_blacklist = []
 	new_processed = []
 	try:
-		options = Options()
-		options.add_argument("--headless")
-		options.add_argument("--no-sandbox")
-		options.add_argument("--disable-dev-shm-usage")
-		options.add_argument("--remote-debugging-pipe")
-		driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-
 		logger.info("Scrape delisting page")
 		driver.get(url)
 
@@ -185,6 +178,12 @@ if __name__ == "__main__":
 	open_local_processed()
 
 	starttime = time.monotonic()
+	options = Options()
+	options.add_argument("--headless")
+	options.add_argument("--no-sandbox")
+	options.add_argument("--disable-dev-shm-usage")
+	options.add_argument("--remote-debugging-pipe")
+	driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 	while True:
-		get_delist_tokens(url)
+		get_delist_tokens(url, driver)
 		time.sleep(loop_secs - ((time.monotonic() - starttime) % loop_secs))
