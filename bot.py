@@ -66,10 +66,11 @@ def get_delist_tokens(url, driver):
 						spans = li.find_all("span", "richtext-text")
 						for span in spans:
 							if "/" in span.text:
-								line = span.text.replace(": ", "")
+								line = span.text.replace(":", "").strip()
 								arr_coins = line.split(", ")
 								for coin in arr_coins:
-									if (not coin in tokens) and (not coin in new_blacklist):
+									coin = coin.strip()
+									if (not coin in tokens[cur_exchange]) and (not coin in new_blacklist):
 										new_blacklist.append(coin)
 
 		driver.quit()
